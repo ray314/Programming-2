@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.wb.internal.swing.MigLayout.model.ui.ColumnEditDialog">
+		<item value="703" key="x"/>
+		<item value="362" key="width"/>
+		<item value="361" key="y"/>
+		<item value="462" key="height"/>
+	</section>
+	<section name="org.eclipse.wb.internal.swing.MigLayout.model.ui.RowEditDialog">
+		<item value="779" key="x"/>
+		<item value="362" key="width"/>
+		<item value="289" key="y"/>
+		<item value="462" key="height"/>
+	</section>
+	<section name="org.eclipse.wb.internal.swing.MigLayout.model.ui.ColumnsDialog">
+		<item value="577" key="x"/>
+		<item value="613" key="width"/>
+		<item value="370" key="y"/>
+		<item value="443" key="height"/>
+	</section>
+	<section name="org.eclipse.wb.internal.swing.MigLayout.model.ui.RowsDialog">
+		<item value="654" key="x"/>
+		<item value="613" key="width"/>
+		<item value="299" key="y"/>
+		<item value="443" key="height"/>
+	</section>
+</section>

@@ -1,0 +1,188 @@
+/**
+ * 
+ */
+package movies;
+
+import java.util.List;
+
+/**
+ * @author Justin Yeung
+ *
+ */
+public class MovieSession implements Comparable<MovieSession> {
+
+	private String movieName; // movie name
+	private char rating; // age rating
+	private Time sessionTime; // session time
+	private SeatReservation[][] sessionSeats;
+	public final static int NUM_ROWS = 3;
+	public final static int NUM_COLS = 5;
+	
+	
+	/**
+	 * Creates a MovieSession instance.
+	 * @param movieName
+	 * @param rating
+	 * @param sessionTime
+	 */
+	public MovieSession(String movieName, char rating, Time sessionTime)
+	{
+		this.movieName = movieName;
+		this.rating = rating;
+		this.sessionTime = sessionTime;
+		sessionSeats = new SeatReservation[NUM_ROWS][NUM_COLS];
+	}
+	
+	/**
+	 * Converts a row letter to an index
+	 * @param rowLetter
+	 * @return int
+	 */
+	public static int convertRowToIndex(char rowLetter)
+	{
+		switch (rowLetter)
+		{
+		case 'A':
+			return 1;
+		case 'B':
+			return 2;
+		case 'C':
+			return 3;
+		}
+		
+		return 0;
+	}
+	
+	public static char convertIndexToRow(int rowIndex)
+	{
+		switch (rowIndex)
+		{
+		case 1:
+			return 'A';
+		case 2:
+			return 'B';
+		case 3:
+			return 'C';
+		}
+		
+		return '0';
+	}
+	
+	public char getRating()
+	{
+		return rating;
+	}
+	
+	public String getMovieName()
+	{
+		return movieName;
+	}
+	
+	public Time getSessionTime()
+	{
+		return sessionTime;
+	}
+	
+	public SeatReservation getSeat(char row, int col)
+	{
+		return sessionSeats[row][col];
+	}
+	
+	public boolean isSetAvailable(char row, int col)
+	{
+		if (sessionSeats[row][col] == null)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean applyBookings(SeatReservation reservations[][])
+	{
+		for (int i = 0; i < NUM_ROWS; i++)
+		{
+			for (int i2 = 0; i2 < NUM_COLS; i2++)
+			{   // return false if both values are not null (not free seat)
+				if (reservations[i][i2] != null && sessionSeats[i][i2] != null)
+				{
+					return false;
+				}
+				if (reservations[i][i2] != null) // check if the seat is not null
+				{
+					if (reservations[i][i2].toString() == "C" && rating == 'R')
+					{	// return false as well if a child is in a R rated movie.
+						return false;
+					} // Condition for a M rated movie.
+					else if (reservations[i][i2].toString() == "C" && rating == 'M')
+					{   // If there is no adult accompanying the child on left or right side of the seat, return false
+						if (reservations[i][i2-1].toString() != "A" || reservations[i][i2+1].toString() != "A")
+						{
+							return false;
+						}
+					}
+				}
+				
+				// If all conditions are met then apply the bookings:
+				if (reservations[i][i2] != null)
+				{
+					sessionSeats[i][i2] = reservations[i][i2];
+				}
+			}
+		}
+		
+		
+		return true;
+	}
+	
+	public void printSeats()
+	{
+		for (int i = 0; i < NUM_ROWS; i++)
+		{
+			for (int i2 = 0; i2 < NUM_COLS; i2++)
+			{
+				if (sessionSeats[i][i2] == null)
+				{
+					System.out.print("|_|");
+				}
+				//System.out.print("|Q|");
+			}
+			System.out.println("");
+		}
+	}
+	
+	public String toString()
+	{
+		return String.format("Movie: %s, Rating: %c, Session Time: %s", movieName, rating, sessionTime.toString());
+	}
+	
+	public int compareTo(MovieSession session)
+	{
+		if (sessionTime.compareTo(session.sessionTime) < 0)
+		{
+			return 1; // if this session is earlier then return 1
+		}
+		else if (sessionTime.compareTo(session.sessionTime) > 0)
+		{
+			return -1; // else if it's later than return -1.
+		}
+		
+		return 0; // both are equal, return 0.
+	}
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		MovieSession session = new MovieSession("Queck", 'R', null);
+		
+		SeatReservation[][] seats = new SeatReservation[NUM_ROWS][NUM_COLS]; 
+		seats[0][2] = new AdultReservation('A', 3);
+		seats[0][1] = new AdultReservation('A', 3);
+		session.applyBookings(seats);
+		
+		session.printSeats();
+	}
+
+}
